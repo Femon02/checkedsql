@@ -1,0 +1,42 @@
+[
+  {
+    "id": 4,
+    "mistake": "misspelled literal ('Brasil')",
+    "sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Brasil'"
+  },
+  {
+    "id": 8,
+    "mistake": "inner join with a filter drops media types",
+    "sql": "SELECT MediaType.Name, COUNT(*) FROM Track JOIN MediaType USING (MediaTypeId) GROUP BY 1 HAVING COUNT(*) > 100"
+  },
+  {
+    "id": 9,
+    "mistake": "milliseconds, not seconds",
+    "sql": "SELECT AVG(Milliseconds) FROM Track"
+  },
+  {
+    "id": 15,
+    "mistake": "counts tracks, not distinct artists",
+    "sql": "SELECT COUNT(*) FROM Track JOIN Genre USING (GenreId) WHERE Genre.Name = 'Jazz'"
+  },
+  {
+    "id": 16,
+    "mistake": "forgets Quantity (sums UnitPrice only)",
+    "sql": "SELECT g.Name, SUM(il.UnitPrice) FROM InvoiceLine il JOIN Track t USING (TrackId) JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.Name"
+  },
+  {
+    "id": 17,
+    "mistake": "ranks by number of invoices, not money spent",
+    "sql": "SELECT c.FirstName, c.LastName FROM Customer c JOIN Invoice i USING (CustomerId) GROUP BY c.CustomerId ORDER BY COUNT(*) DESC LIMIT 1"
+  },
+  {
+    "id": 19,
+    "mistake": "misses NULL composers",
+    "sql": "SELECT COUNT(*) FROM Track WHERE Composer = ''"
+  },
+  {
+    "id": 20,
+    "mistake": "a count, not a percentage",
+    "sql": "SELECT COUNT(*) FROM Track WHERE UnitPrice = 0.99"
+  }
+]
