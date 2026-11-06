@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "tag": "count",
+    "question": "How many artists are there?",
+    "gold_sql": "SELECT COUNT(*) FROM Artist;"
+  },
+  {
+    "id": 2,
+    "tag": "join",
+    "question": "How many tracks are in the Rock genre?",
+    "gold_sql": "SELECT COUNT(*) FROM Track t JOIN Genre g ON t.GenreId = g.GenreId WHERE g.Name = 'Rock';"
+  },
+  {
+    "id": 3,
+    "tag": "join",
+    "question": "List the titles of all albums by AC/DC.",
+    "gold_sql": "SELECT al.Title FROM Album al JOIN Artist ar ON al.ArtistId = ar.ArtistId WHERE ar.Name = 'AC/DC';"
+  },
+  {
+    "id": 4,
+    "tag": "filter",
+    "question": "How many customers are from Brazil?",
+    "gold_sql": "SELECT COUNT(*) FROM Customer WHERE Country = 'Brazil';"
+  },
+  {
+    "id": 5,
+    "tag": "aggregate",
+    "question": "What is the total amount of all invoices combined?",
+    "gold_sql": "SELECT SUM(Total) FROM Invoice;"
+  },
+  {
+    "id": 6,
+    "tag": "group",
+    "question": "What is the total invoice amount for each billing country?",
+    "gold_sql": "SELECT BillingCountry, SUM(Total) FROM Invoice GROUP BY BillingCountry;"
+  },
+  {
+    "id": 7,
+    "tag": "group+order",
+    "question": "Which billing country has the highest total invoice amount?",
+    "gold_sql": "SELECT BillingCountry FROM Invoice GROUP BY BillingCountry ORDER BY SUM(Total) DESC LIMIT 1;"
+  },
+  {
+    "id": 8,
+    "tag": "join+group",
+    "question": "How many tracks are there for each media type? Show the media type name and the count.",
+    "gold_sql": "SELECT m.Name, COUNT(*) FROM Track t JOIN MediaType m ON t.MediaTypeId = m.MediaTypeId GROUP BY m.MediaTypeId;"
+  },
+  {
+    "id": 9,
+    "tag": "aggregate",
+    "question": "What is the average track length in seconds?",
+    "gold_sql": "SELECT AVG(Milliseconds) / 1000.0 FROM Track;"
+  },
+  {
+    "id": 10,
+    "tag": "self-join",
+    "question": "Which employees report directly to Nancy Edwards? Show first and last name.",
+    "gold_sql": "SELECT e.FirstName, e.LastName FROM Employee e JOIN Employee m ON e.ReportsTo = m.EmployeeId WHERE m.FirstName = 'Nancy' AND m.LastName = 'Edwards';"
+  },
+  {
+    "id": 11,
+    "tag": "date",
+    "question": "How many invoices were issued in each year?",
+    "gold_sql": "SELECT strftime('%Y', InvoiceDate), COUNT(*) FROM Invoice GROUP BY 1;"
+  },
+  {
+    "id": 12,
+    "tag": "subquery",
+    "question": "List the id and name of every playlist that contains no tracks.",
+    "gold_sql": "SELECT PlaylistId, Name FROM Playlist WHERE PlaylistId NOT IN (SELECT PlaylistId FROM PlaylistTrack);"
+  },
+  {
+    "id": 13,
+    "tag": "join+group",
+    "question": "For each support representative, how many customers do they support? Show first name, last name and the count.",
+    "gold_sql": "SELECT e.FirstName, e.LastName, COUNT(c.CustomerId) FROM Employee e JOIN Customer c ON c.SupportRepId = e.EmployeeId GROUP BY e.EmployeeId;"
+  },
+  {
+    "id": 14,
+    "tag": "order",
+    "question": "What is the name of the longest track?",
+    "gold_sql": "SELECT Name FROM Track ORDER BY Milliseconds DESC LIMIT 1;"
+  },
+  {
+    "id": 15,
+    "tag": "multi-join",
+    "question": "How many different artists have at least one Jazz track?",
+    "gold_sql": "SELECT COUNT(DISTINCT al.ArtistId) FROM Track t JOIN Album al ON t.AlbumId = al.AlbumId JOIN Genre g ON t.GenreId = g.GenreId WHERE g.Name = 'Jazz';"
+  },
+  {
+    "id": 16,
+    "tag": "multi-join",
+    "question": "What is the total revenue for each genre, computed from invoice lines as unit price times quantity? Show genre name and revenue.",
+    "gold_sql": "SELECT g.Name, SUM(il.UnitPrice * il.Quantity) FROM InvoiceLine il JOIN Track t ON il.TrackId = t.TrackId JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.GenreId;"
+  },
+  {
+    "id": 17,
+    "tag": "join+order",
+    "question": "Which customer has spent the most in total? Show first and last name.",
+    "gold_sql": "SELECT c.FirstName, c.LastName FROM Customer c JOIN Invoice i ON i.CustomerId = c.CustomerId GROUP BY c.CustomerId ORDER BY SUM(i.Total) DESC LIMIT 1;"
+  },
+  {
+    "id": 18,
+    "tag": "having",
+    "question": "List the titles of albums that have more than 20 tracks.",
+    "gold_sql": "SELECT al.Title FROM Album al JOIN Track t ON t.AlbumId = al.AlbumId GROUP BY al.AlbumId HAVING COUNT(*) > 20;"
+  },
+  {
+    "id": 19,
+    "tag": "ambiguity",
+    "question": "How many tracks have no composer listed?",
+    "gold_sql": "SELECT COUNT(*) FROM Track WHERE Composer IS NULL;"
+  },
+  {
+    "id": 20,
+    "tag": "ambiguity",
+    "question": "What percentage of tracks are priced at 0.99?",
+    "gold_sql": "SELECT 100.0 * SUM(CASE WHEN UnitPrice = 0.99 THEN 1 ELSE 0 END) / COUNT(*) FROM Track;"
+  }
+]
